@@ -8,26 +8,26 @@ export async function POST(req: NextRequest) {
     try{
         //nhan request ve body 
         const body = await req.json(); 
-        const {userName, Password} = body;  
+        const {username, password} = body;  
         //validate
-        if(isEmpty(Password) || isEmpty(userName)){ 
+        if(isEmpty(password) || isEmpty(username)){ 
             return badRequest("Please fill out all fields!"); 
         }
         //password // hash
-        if (!isStrongPassword(Password)) {
+        if (!isStrongPassword(password)) {
             return badRequest("Password is not strong");
         }
         
-        const hashPassword = await bcrypt.hash(Password, 10); 
+        const hashPassword = await bcrypt.hash(password, 10); 
         const newUser = await prisma.user.create({
             data:{ 
-                username: userName,
+                username: username,
                 password: hashPassword,
             },
         })
         return created({
             id: newUser.id,
-            userName: newUser.id,
+            userName: newUser.username,
             Password: "****",
         }, "Registration successful")
 
@@ -37,6 +37,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
             {error: "Internal Server Error"},
             {status: 500}
-        )
+        );
     }
 }
