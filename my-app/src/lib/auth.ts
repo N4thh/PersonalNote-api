@@ -20,5 +20,4 @@ export function verifytoken (req: NextRequest) {
         console.error('Token verification failed:', error);
         return null;
     }
-
 }
