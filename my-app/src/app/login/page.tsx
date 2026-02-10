@@ -36,13 +36,16 @@ const Login = () => {
             })
             const data = await res.json();
             if(!res.ok){ 
-                throw new Error(data.error || "Login failed")
+                throw new Error(data.error || data.message || "Login failed")
             }
             setSuccess('Login successfully')
             router.push ("/dashboard")
-            setisLoading(true)
-        }catch{
-            setError('Something went wrong. Try again!');
+        }catch(err: unknown){
+            if(err instanceof Error){
+                setError(err.message)
+            }else{
+                setError('Something went wrong. Try again!');
+            }            
         } finally {
             setisLoading(false);
         }
@@ -60,7 +63,7 @@ const Login = () => {
             <div className='border rounded-lg p-6 shadow-sm'>
                 <form
                 onSubmit={handleLogin}>
-                    <div className='mb-3 space-y-1'> 
+                    <div className='mb-5 space-y-1'> 
                         <h1 className='font-semibold'>Login</h1>
                         <p className='text-gray-500'>Enter your credentials to access your notes</p>
                     </div>
@@ -68,10 +71,11 @@ const Login = () => {
                     <div className='space-y-3'>
                         {/* username */}
                         <div className='space-y-1'>
-                            <p>Username</p>
+                            <label className='font-semibold'>Username</label>
                             <input 
                             className='border rounded-md w-full p-2 text-sm border-gray-200 bg-gray-200'
                             name = "username"
+                            type='text'
                             value = {formData.username}
                             onChange={handleChange}
                             placeholder='Your username'
@@ -79,10 +83,11 @@ const Login = () => {
                         </div>
                         {/* password */}
                         <div className='space-y-1'>
-                            <p>Password</p>
+                            <label className='font-semibold'>Password</label>
                             <input 
                             className='border rounded-md w-full p-2 text-sm border-gray-200 bg-gray-200'
                             name = "password"
+                            type='password'
                             value = {formData.password}
                             onChange={handleChange}
                             placeholder='Enter your password'
@@ -95,12 +100,18 @@ const Login = () => {
                             hover:bg-[#222] transition-all duration-200"
                     type='submit'
                     disabled ={loading}
-                    >{loading ? "Logging in..." : "Login"}</button> 
-                    <div className='mt-3'>
-                        {error && <p className="text-red-600">{error}</p>}
-                        {success && <p className="text-green-600">{success}</p>} 
-                    </div>            
+                    >{loading ? "Logging in..." : "Login"}</button>
+
+                    <div>
+                        {error && <p className="text-red-600 mt-2">{error}</p>}
+                        {success && <p className="text-green-600 mt-2">{success}</p>} 
+                    </div>   
+                
+                    <div className='flex justify-center mt-4'>
+                        <p>Don&apos;t have an account? <a href='/signup' className='font-semibold '>Sign up</a> </p>
+                    </div>          
                 </form>
+
             </div>
         </div>
     </div>
