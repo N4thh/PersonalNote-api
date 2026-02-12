@@ -1,9 +1,14 @@
 import React from 'react'
 
-const page = () => {
+const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+       {/* top */}
+       <div>
+        <h1 className='text-3xl font-semibold'>My Notes</h1>
+       </div>
+    </div>
   )
 }
 
-export default page
+export default Dashboard
