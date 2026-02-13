@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { badRequest, created, notFound, unauthorized } from "@/lib/helper/response";
+import { badRequest, notFound, unauthorized } from "@/lib/helper/response";
 import { isEmpty } from "@/lib/helper/validators";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -37,9 +37,19 @@ export async function POST(req: NextRequest) {
             process.env.JWT_SECRET!,
             {expiresIn: '7d'}
         );
-        return created(token)
-        
-        //tra ve token 
+        const res = NextResponse.json({
+        message: "Login success"
+        });
+
+        res.cookies.set("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+        });
+
+         return res;
     }catch(err){
         console.log('', err); 
         return unauthorized("Login failed");

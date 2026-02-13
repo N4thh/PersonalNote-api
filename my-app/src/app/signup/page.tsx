@@ -59,12 +59,12 @@ const Signup = () => {
     <div className='min-h-screen flex items-center justify-center'>
         <div className='w-full max-w-md'>
             {/* text */}
-            <div className='text-center mb-4'>
+            <div className='text-center mb-10'>
                 <h1 className='font-semibold text-3xl mb-3'>NoteLy</h1>
                 <p className='text-gray-500'>Create an account to start taking notes.</p>
             </div>
             {/* register form */}
-            <div className='border rounded-lg p-6 shadow-sm'>
+            <div className='border border-gray-300 rounded-lg p-6 shadow-sm'>
                 <form onSubmit={handleSubmit}>
                     <div className='space-y-1 mb-5'>
                         <h1 className='font-semibold'>Sign Up</h1>
