@@ -61,8 +61,7 @@ const Login = () => {
             </div>
             {/* login form */}
             <div className='border border-gray-300 rounded-lg p-6 shadow-sm'>
-                <form
-                onSubmit={handleLogin}>
+                <form onSubmit={handleLogin}>
                     <div className='mb-5 space-y-1'> 
                         <h1 className='font-semibold'>Login</h1>
                         <p className='text-gray-500'>Enter your credentials to access your notes</p>

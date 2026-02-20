@@ -1,11 +1,15 @@
 'use client'
 import { ReactNode } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+
 
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-   const [activeBtn, setActiveBtn] = useState("");
+     const pathname = usePathname();
+
+  const isHome = pathname === "/dashboard";
+  const isNotePage = pathname.startsWith("/dashboard/notes");
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-black">
@@ -15,13 +19,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <h1 className=" text-2xl">Notely</h1>
         
        <Link href="/dashboard"
-        onClick={() => setActiveBtn("home")}
-        className={`border rounded-lg py-2 px-4 ${activeBtn === "home" ? "bg-black text-white" : "bg-white text-black"}`}       
+        className={`border rounded-lg py-2 px-4 ${isHome ? "bg-black text-white" : "bg-white text-black"}`}       
         >Home</Link>
         
       <Link href="/dashboard/notes"
-        onClick={() => setActiveBtn("CreateNote")}
-        className={`border rounded-lg py-2 px-4 ${activeBtn === "CreateNote" ? "bg-black text-white" : "bg-white text-black"}`}       
+        className={`border rounded-lg py-2 px-4 ${isNotePage ? "bg-black text-white" : "bg-white text-black"}`}       
         >Create Note</Link>
              
       </header>

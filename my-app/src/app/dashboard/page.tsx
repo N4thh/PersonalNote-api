@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { getUser } from '@/lib/getUser';
-import Notebox from '@/components/Notebox'
 import { redirect } from "next/navigation";
+import Notebox from '@/components/Notebox'
 
 const Dashboard = async () => {
 
@@ -25,6 +25,7 @@ const Dashboard = async () => {
         <div className='space-y-3'>
           <h1 className='text-3xl font-semibold'>My Notes</h1>
           <p className='text-gray-500'>{totalNote} notes total</p>
+         
         </div>
 
          <div className='max-w-lg'>
