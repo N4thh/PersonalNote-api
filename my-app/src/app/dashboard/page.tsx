@@ -27,8 +27,8 @@ const Dashboard = async () => {
           <p className='text-gray-500'>{totalNote} notes total</p>
          
         </div>
-
-         <div className='max-w-lg'>
+          {/* responsive: mobile 1 column, table 2, desktop 3 */}
+         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {notes.map(note => (
             <Notebox key={note.id} note={note}/>
           ))}

@@ -7,7 +7,7 @@ type Props = {
 }
 const Notebox = ({note}: Props) => {
   return (
-    <div className="border border-gray-300 rounded-xl p-4">
+    <div className="border border-gray-300 rounded-xl p-4 max-full">
         <div className="p-2 space-y-8">
             <div className="space-y-1">
                 <div className="flex justify-between">
