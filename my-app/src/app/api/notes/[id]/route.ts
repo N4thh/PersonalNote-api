@@ -5,16 +5,20 @@ import { isEmpty } from "@/lib/helper/validators";
 import { verifytoken } from "@/lib/auth";
 
 
-export async function PUT(req: NextRequest, context: { params: Promise<{id: string}>}) {
+export async function PUT(req: NextRequest, context: { params: {id: string}}) {
    try{
     //check user
     const user = await verifytoken(req);
     if(!user){ 
-        return new NextResponse("Don't have permission" , {status: 401})
+        return NextResponse.json(
+            { error: "Don't have permission" },
+            { status: 401}
+        );
     }
+ 
     //get noteID
-    const {id: noteID} = await context.params; 
-    const existNote = await prisma.note.findUnique({
+    const {id: noteID} = context.params; 
+    const existNote = await prisma.note.findFirst({
         where: {
             id: noteID, 
             userId: user.id

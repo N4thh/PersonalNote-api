@@ -38,12 +38,12 @@ export async function POST(req: NextRequest) {
             {expiresIn: '7d'}
         );
         const res = NextResponse.json({
-        message: "Login success"
+        message: "Login success",
         });
 
         res.cookies.set("token", token, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
         maxAge: 60 * 60 * 24 * 7
