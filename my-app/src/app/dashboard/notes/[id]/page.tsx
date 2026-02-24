@@ -1,30 +1,59 @@
 'use client'
 import React, { SyntheticEvent } from 'react'
 import { useState, useEffect} from "react";
-import { useRouter } from "next/navigation";
-import { Note } from '@prisma/client';
+import { useParams, useRouter } from "next/navigation";
 
-type Props= {
-  note: Note
-}
-const EditNote = ({note}: Props) => {
+
+const EditNote = () => {
     //data
     const router = useRouter(); 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const params = useParams<{ id: string }>();
+    const noteId = params?.id;
     const [loading, setisLoading] = useState(false);
+    const [loadingNote, setLoadingNote] = useState(true);
     const [formData, setFormData] = useState ({
         newtitle: '', 
         newcontent:''
     })
     useEffect(() => {
-    if (note) {
-      setFormData({
-        newtitle: note.title,
-        newcontent: note.content
-      });
+    if (!noteId) {
+        setError('Cannot find note id');
+        setLoadingNote(false);
+        return;
+      }
+
+      const getNote = async () => {
+        try {
+          const res = await fetch(`/api/notes/${noteId}`);
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(data.error || data.message || 'Cannot load note');
+          }
+
+          setFormData({
+            newtitle: data.data.title,
+            newcontent: data.data.content
+          });
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('Cannot load note');
+          }
+        } finally {
+          setLoadingNote(false);
+        }
+      };
+
+      getNote();
+    }, [noteId]);
+
+    if (loadingNote) {
+      return <p>Loading note...</p>;
     }
-  }, [note]);
     //handeleChange
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>{
         const {name, value} = e.target
@@ -42,7 +71,7 @@ const EditNote = ({note}: Props) => {
       setisLoading(true)
       try{
 
-        const res = await fetch(`/api/notes/${note.id}` ,{
+        const res = await fetch(`/api/notes/${noteId}` ,{
           method: 'PUT', 
           headers: {'Content-Type' : 'application/json'},
           body: JSON.stringify(formData)

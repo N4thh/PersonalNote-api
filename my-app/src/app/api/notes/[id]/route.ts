@@ -4,8 +4,40 @@ import { badRequest, notFound, success } from "@/lib/helper/response";
 import { isEmpty } from "@/lib/helper/validators";
 import { verifytoken } from "@/lib/auth";
 
+export async function GET(req: NextRequest, context: { params: Promise<{id: string}>}) {
+    try {
+        const user = verifytoken(req);
+        if(!user){
+            return NextResponse.json(
+                { error: "Don't have permission" },
+                { status: 401}
+            );
+        }
 
-export async function PUT(req: NextRequest, context: { params: {id: string}}) {
+        const {id: noteID} = await context.params;
+        const note = await prisma.note.findFirst({
+            where: {
+                id: noteID,
+                userId: user.id
+            }
+        });
+
+        if(!note){
+            return notFound("Note does not exist");
+        }
+
+        return success(note, "Get note successfully");
+    } catch (err){
+        console.error("", err);
+        return NextResponse.json(
+            {error: "Internal sever error"},
+            {status: 500}
+        )
+    }
+}
+
+
+export async function PUT(req: NextRequest, context: { params: Promise<{id: string}>}) {
    try{
     //check user
     const user = await verifytoken(req);
@@ -17,7 +49,7 @@ export async function PUT(req: NextRequest, context: { params: {id: string}}) {
     }
  
     //get noteID
-    const {id: noteID} = context.params; 
+    const {id: noteID} = await context.params; 
     const existNote = await prisma.note.findFirst({
         where: {
             id: noteID, 
