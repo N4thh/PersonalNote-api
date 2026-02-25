@@ -1,9 +1,11 @@
-
+import { redirect } from "next/navigation";
+import { getUser } from "@/lib/getUser";
 
 export default function Home() {
-  return (
-    <div>
-        <a href='/login'>Login</a>
-    </div>
-  );
+  const user = getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+    redirect("/dashboard");
 }

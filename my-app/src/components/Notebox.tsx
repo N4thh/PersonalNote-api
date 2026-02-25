@@ -1,17 +1,17 @@
 'use client'
 import { Note } from "@prisma/client"
 import Link from "next/link"
-import { useState} from "react";
+
 import { useRouter } from "next/navigation";
 import { Trash2, Pencil } from "lucide-react";
+import { NextResponse } from "next/server";
 
 type Props = {
     note: Note
 }
 const Notebox = ({note}: Props) => {
     const router = useRouter();
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
+    
     const handleDelete = async () => {
         const confirmDelete = confirm("Are you sure you want to delete this note?");
         if(!confirmDelete) return;
@@ -25,14 +25,11 @@ const Notebox = ({note}: Props) => {
             if (!res.ok) {
             throw new Error(data.error || data.message || '"Delete failed');
             }
-            setSuccess("Deleting note successfullly")
+            
             router.push("/dashboard")           
         }catch(err: unknown){
-            if(err instanceof Error){
-                setError(err.message)
-            }else{
-                setError('Something went wrong. Try again!');
-            }      
+            console.error(err);
+            return NextResponse.json("Delete failed") 
         }
     }
 
@@ -44,10 +41,10 @@ const Notebox = ({note}: Props) => {
                     <h1 className="font-semibold text-2xl">{note.title}</h1>
                     <div className="flex space-x-2">
                         <Link href={`/dashboard/notes/${note.id}` } 
-                        className="px-3 py-1.5 rounded-md transition-all duration-200  hover:bg-gray-200 active:bg-gray-300">
+                        className="px-1 py-1.5 rounded-md transition-all duration-200  hover:bg-gray-200 active:bg-gray-300">
                         <Pencil size={20}  /></Link>
 
-                        <button className="px-3 py-1.5 rounded-md transition-all duration-200  hover:bg-red-200 active:bg-red-300"
+                        <button className="px-1 py-1.5 rounded-md transition-all duration-200  hover:bg-red-200 active:bg-red-300"
                         onClick={handleDelete}>
                         <Trash2 size={20} color="red" /></button>                               
                     </div>               
