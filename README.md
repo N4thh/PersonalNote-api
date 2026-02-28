@@ -81,11 +81,11 @@ npm run dev
 
 ##  Website Demo
 
-![Sign In](./public/images/signin.png)
-![Sign Up](./public/images/signup.png)
-![Dashboard](./public/images/dashboard.png)
-![Create Note](./public/images/createnote.png)
-![Edit Note](./public/images/editnote.png)
+![Sign In](./images/signin.png)
+![Sign Up](./images/signup.png)
+![Dashboard](./images/dashboard.png)
+![Create Note](./images/createnote.png)
+![Edit Note](./images/editnote.png)
 
 ---
 
