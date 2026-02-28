@@ -2,7 +2,7 @@
 import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, Github } from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -81,9 +81,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           <a
             href="https://github.com/N4thh/PersonalNote-api"
-            className="hover:text-gray-600"
+            className="hover:text-gray-600 flex items-center space-x-3"
             target="_blank"
-          > View on GitHub</a>
+          ><Github size = {20}/> <span>View on GitHub</span></a>
         </div>
 
         <p className="text-center mt-3 text-sm">
