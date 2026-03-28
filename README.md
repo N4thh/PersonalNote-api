@@ -59,6 +59,7 @@ Follow the steps below to run this project locally.
 ``bash
 git clone https://github.com/N4thh/PersonalNote-api.git
 cd PersonalNote-api
+cd my-app
 
 ### Install Dependencies
 npm install
